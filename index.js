@@ -3,7 +3,7 @@
 var fs = require("fs");
 var parseRange = require("range-parser");
 var mkdirp = require("mkdirp");
-var path = require('path')
+var path = require("path")
 
 exports.readRange = function(fd, range, callback) {
   fs.stat(fd, function(err, stat) {
@@ -12,8 +12,10 @@ exports.readRange = function(fd, range, callback) {
     } else {
       var fileSize = stat.size;
       var parsedRange = parseRange(fileSize, range);
-      if(parsedRange === -1 || parsedRange === -2) {
-        callback(null, -1);
+      if(parsedRange === -1) {
+        callback(new Error("signals an invalid range"), null);
+      } else if (parsedRange === -2) {
+        callback(new Error("signals a malformed header string"), null);
       } else {
         var start = parsedRange[0].start;
         var end = parsedRange[0].end;
@@ -35,7 +37,7 @@ exports.ensureFile = function(fd, flags, mode, callback) {
   var dirname = path.dirname(fd);
   if (typeof mode == 'function') {
         callback = mode;
-        mode = 777;
+        mode = parseInt('0777', 8);
   }
   mkdirp(dirname, mode, function(err,data) {
     if(err) {
