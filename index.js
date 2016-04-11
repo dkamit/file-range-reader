@@ -17,7 +17,7 @@ exports.readRange = function(filePath, range, callback) {
       } else if (parsedRange === -2) {
         callback(new Error("Malformed string"), null);
       } else {
-        exports.ensureFile(filePath, "r", function(err, handle){
+        fs.open(filePath, "r", function(err, handle){
           var start = parsedRange[0].start;
           var end = parsedRange[0].end;
           var length = end - start + 1;
