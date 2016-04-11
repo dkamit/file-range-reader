@@ -5,8 +5,8 @@ var parseRange = require("range-parser");
 var mkdirp = require("mkdirp");
 var path = require("path");
 
-exports.readRange = function(fd, range, callback) {
-  fs.stat(fd, function(err, stat) {
+exports.readRange = function(filePath, range, callback) {
+  fs.stat(filePath, function(err, stat) {
     if(err) {
       callback(err, null);
     } else {
@@ -17,24 +17,26 @@ exports.readRange = function(fd, range, callback) {
       } else if (parsedRange === -2) {
         callback(new Error("Malformed string"), null);
       } else {
-        var start = parsedRange[0].start;
-        var end = parsedRange[0].end;
-        var length = end - start + 1;
-        var buffer = new Buffer(length);
-        fs.read(fd, buffer, 0, length, start, function(err, data) {
-          if(err) {
-            callback(err, null);
-          } else {
-            callback(null, data);
-          }
+        exports.ensureFile(filePath, "r", function(err, handle){
+          var start = parsedRange[0].start;
+          var end = parsedRange[0].end;
+          var length = end - start + 1;
+          var buffer = new Buffer(length);
+          fs.read(handle, buffer, 0, length, start, function(err, data) {
+            if(err) {
+              callback(err, null);
+            } else {
+              callback(null, buffer);
+            }
+          });
         });
       }
     }
   });
 };
 
-exports.ensureFile = function(fd, flags, mode, callback) {
-  var dirname = path.dirname(fd);
+exports.ensureFile = function(filePath, flags, mode, callback) {
+  var dirname = path.dirname(filePath);
   if (typeof mode == 'function') {
         callback = mode;
         mode = parseInt('0777', 8);
@@ -43,7 +45,7 @@ exports.ensureFile = function(fd, flags, mode, callback) {
     if(err) {
       callback(err, null);
     } else {
-      fs.open(fd, flags, callback);
+      fs.open(filePath, flags, callback);
     }
   });
 };
