@@ -1,0 +1,32 @@
+{
+  "name": "fs-more",
+  "version": "1.0.0",
+  "description": "More File System Utilities",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dkamit/fs-more.git"
+  },
+  "keywords": [
+    "fs",
+    "range",
+    "request",
+    "directory",
+    "folder",
+    "file",
+    "creation"
+  ],
+  "author": "Amith DK <amithdevatha1@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/dkamit/fs-more/issues"
+  },
+  "homepage": "https://github.com/dkamit/fs-more#readme",
+  "dependencies": {
+    "mkdirp": "^0.5.1",
+    "range-parser": "^1.0.3"
+  }
+}
