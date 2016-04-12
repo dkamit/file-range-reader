@@ -2,7 +2,6 @@
 
 var fs = require("fs");
 var parseRange = require("range-parser");
-var mkdirp = require("mkdirp");
 var path = require("path");
 
 exports.readRange = function(filePath, range, callback) {
@@ -31,47 +30,6 @@ exports.readRange = function(filePath, range, callback) {
           });
         });
       }
-    }
-  });
-};
-
-exports.ensureFile = function(filePath, flags, mode, callback) {
-  var dirname = path.dirname(filePath);
-  if (typeof mode == 'function') {
-        callback = mode;
-        mode = parseInt('0777', 8);
-  }
-  mkdirp(dirname, mode, function(err,data) {
-    if(err) {
-      callback(err, null);
-    } else {
-      fs.open(filePath, flags, callback);
-    }
-  });
-};
-
-exports.ensureCopy = function(source, dest, mode, callback) {
-  var dirname = path.dirname(dest);
-  if (typeof mode == 'function') {
-        callback = mode;
-        mode = 777;
-  }
-  mkdirp(dirname, mode, function(err,data) {
-    if(err) {
-      callback(err, null);
-    } else {
-      var sourceStream = fs.createReadStream(source);
-      var destStream = fs.createWriteStream(dest);
-      sourceStream.on("error", function(err) {
-        callback(err, null);
-      });
-      destStream.on("error", function(err) {
-        callback(err, null);
-      });
-      destStream.on("finish", function(err, data) {
-        callback(null, dest);
-      });
-      sourceStream.pipe(destStream);
     }
   });
 };
