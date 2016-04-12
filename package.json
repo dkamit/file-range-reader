@@ -1,5 +1,5 @@
 {
-  "name": "fs-more",
+  "name": "file-range-reader",
   "version": "1.0.0",
   "description": "More File System Utilities",
   "main": "index.js",
