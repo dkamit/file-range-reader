@@ -1,6 +1,6 @@
 {
   "name": "file-range-reader",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "More File System Utilities",
   "main": "index.js",
   "scripts": {
