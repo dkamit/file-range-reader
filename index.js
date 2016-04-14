@@ -25,7 +25,13 @@ exports.readRange = function(filePath, range, callback) {
             if(err) {
               callback(err, null);
             } else {
-              callback(null, buffer);
+              fs.close(handle, function(err){
+                if(err) {
+                  callback(err,null);
+                } else {
+                  callback(null, buffer);
+                }
+              });
             }
           });
         });
